@@ -1,4 +1,4 @@
-export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
+import { LogLevel } from "./logger.d";
 
 class Logger {
   private level: LogLevel;
