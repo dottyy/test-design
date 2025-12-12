@@ -18,13 +18,10 @@ const eslintConfig = defineConfig([
         }
       ],
       "react/no-unescaped-entities": "off",
-      "max-len": ["error", {
-        code: 124,
-        ignoreUrls: true,
-        ignoreStrings: true,
-        ignoreTemplateLiterals: true,
-        ignoreComments: true
-      }],
+      "no-console": ["warn", { allow: ["warn", "error"] }],
+      "@typescript-eslint/no-explicit-any": "error",
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn"
     },
   },
   // Override default ignores of eslint-config-next.
