@@ -10,7 +10,7 @@ export const useMapInitialize = (props: MapConfiguration) => {
   const {
     center = DEFAULT_CENTER,
     zoom = DEFAULT_ZOOM,
-    style = "mapbox://styles/mapbox/streets-v12",
+    style = "mapbox://styles/mapbox/light-v11",
     bearing = 0,
     pitch = 0,
   } = props;
