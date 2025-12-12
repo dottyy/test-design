@@ -1,15 +1,16 @@
 'use client';
 
-import { Component, ErrorInfo, ReactNode } from 'react';
+import { Component, ErrorInfo } from 'react';
 import { logger } from '@/lib/logger';
 import { Props, State } from './ErrorBoundary.d';
+import { When } from 'vizonomy';
 import {
-  Container,
-  Card,
-  Title,
-  Text,
-  ErrorPre,
-  RetryButton,
+  ContainerStyled,
+  CardStyled,
+  TitleStyled,
+  TextStyled,
+  ErrorPreStyled,
+  RetryButtonStyled,
 } from './ErrorBoundary.styled';
 
 
@@ -41,22 +42,22 @@ class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <Container>
-          <Card>
-            <Title>Something went wrong</Title>
-            <Text>
+        <ContainerStyled>
+          <CardStyled>
+            <TitleStyled>Something went wrong</TitleStyled>
+            <TextStyled>
               We apologize for the inconvenience. An unexpected error has occurred.
-            </Text>
-            {error && (
-              <ErrorPre>
-                <code>{error.message}</code>
-              </ErrorPre>
-            )}
-            <RetryButton onClick={() => this.setState({ hasError: false, error: null })}>
+            </TextStyled>
+            <When condition={error}>
+              <ErrorPreStyled>
+                <code>{error?.message}</code>
+              </ErrorPreStyled>
+            </When>
+            <RetryButtonStyled onClick={() => this.setState({ hasError: false, error: null })}>
               Try again
-            </RetryButton>
-          </Card>
-        </Container>
+            </RetryButtonStyled>
+          </CardStyled>
+        </ContainerStyled>
       );
     }
 
