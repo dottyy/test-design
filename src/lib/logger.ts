@@ -24,12 +24,14 @@ class Logger {
 
   debug(message: string, meta?: Record<string, unknown>) {
     if (this.shouldLog('debug')) {
+      // eslint-disable-next-line no-console
       console.debug(this.formatMessage('debug', message, meta));
     }
   }
 
   info(message: string, meta?: Record<string, unknown>) {
     if (this.shouldLog('info')) {
+      // eslint-disable-next-line no-console
       console.info(this.formatMessage('info', message, meta));
     }
   }

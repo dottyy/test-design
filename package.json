@@ -12,9 +12,10 @@
   "dependencies": {
     "@types/mapbox-gl": "^3.4.1",
     "mapbox-gl": "^3.17.0",
-    "next": "16.0.8",
+    "next": "^16.0.10",
     "react": "19.2.1",
-    "react-dom": "19.2.1"
+    "react-dom": "19.2.1",
+    "vizonomy": "^0.2.11"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
