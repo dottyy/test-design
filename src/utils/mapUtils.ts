@@ -1,18 +1,15 @@
-import mapboxgl from 'mapbox-gl';
 import { LayerConfig } from '@/types/story';
+import { logger } from '@/lib/logger';
 
 export const initializeMapLayers = (map: mapboxgl.Map, layers: Record<string, LayerConfig>) => {
-  console.log("Initializing map layers:", Object.keys(layers));
   Object.values(layers).forEach((layerConfig) => {
     if (!map.getSource(layerConfig.id)) {
-      console.log(`Adding source: ${layerConfig.id}`);
       map.addSource(layerConfig.id, {
         type: 'geojson',
         data: layerConfig.data
       });
 
       if (!map.getLayer(layerConfig.id)) {
-        console.log(`Adding layer: ${layerConfig.id}`);
         map.addLayer({
           ...layerConfig.style,
           id: layerConfig.id,
@@ -23,7 +20,7 @@ export const initializeMapLayers = (map: mapboxgl.Map, layers: Record<string, La
           }
         });
       } else {
-        console.log(`Layer already exists: ${layerConfig.id}`);
+        logger.error(`Layer already exists: ${layerConfig.id}`);
       }
 
       if (layerConfig.secondaryStyle) {
@@ -41,7 +38,7 @@ export const initializeMapLayers = (map: mapboxgl.Map, layers: Record<string, La
         }
       }
     } else {
-      console.log(`Source already exists: ${layerConfig.id}`);
+      logger.error(`Source already exists: ${layerConfig.id}`);
     }
   });
 };

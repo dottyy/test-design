@@ -37,7 +37,6 @@ export const useMapInitialize = (props: MapConfiguration) => {
       map.current.addControl(new mapboxgl.NavigationControl(), "top-right");
 
       const onStyleLoad = () => {
-        console.log("Map style loaded, initializing layers...");
         if (map.current) {
           initializeMapLayers(map.current, storyLayers);
         }

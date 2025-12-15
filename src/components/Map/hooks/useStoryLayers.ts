@@ -12,10 +12,8 @@ export const useStoryLayers = (props: UseStoryLayersConfig) => {
 
   const updateVisibility = useCallback((map: mapboxgl.Map, chapter: Chapter | null) => {
     if (!chapter) {
-      console.log("No chapter active");
       return;
     }
-    console.log(`Updating visibility for chapter: ${chapter.id}`);
     const activeLayerIds = new Set(chapter.visibleLayers);
 
     Object.values(layers).forEach((layerConfig) => {
@@ -23,7 +21,6 @@ export const useStoryLayers = (props: UseStoryLayersConfig) => {
       const visibility = isVisible ? 'visible' : 'none';
 
       if (map.getLayer(layerConfig.id)) {
-        if (isVisible) console.log(`Setting ${layerConfig.id} to visible`);
         map.setLayoutProperty(layerConfig.id, 'visibility', visibility);
       } else {
         console.warn(`Layer ${layerConfig.id} not found on map during updateVisibility`);
@@ -43,8 +40,6 @@ export const useStoryLayers = (props: UseStoryLayersConfig) => {
     if (!map || !currentChapter) return;
 
     const applyChapter = () => {
-      console.log(`Applying chapter: ${currentChapter.id}`);
-
       map.flyTo({
         ...currentChapter.camera,
         essential: true
@@ -57,7 +52,6 @@ export const useStoryLayers = (props: UseStoryLayersConfig) => {
       applyChapter();
     } else {
       const onStyleLoad = () => {
-        console.log("Style loaded, applying chapter...");
         applyChapter();
       };
 
