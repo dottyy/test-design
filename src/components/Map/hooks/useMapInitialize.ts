@@ -1,41 +1,63 @@
 import { useEffect, useRef } from "react";
 import mapboxgl from "mapbox-gl";
-import { MapProps } from "../Map.d";
 import config from "@/config/config";
 import { DEFAULT_CENTER, DEFAULT_ZOOM } from "../Map.constants";
+import { initializeMapLayers } from "@/utils/mapUtils";
+import { storyLayers } from "@/data/storyConfig";
+import { MapConfiguration } from "../Map.d";
 
-export const useMapInitialize = (props: MapProps) => {
-    const { initialCenter = DEFAULT_CENTER, initialZoom = DEFAULT_ZOOM } = props;
+export const useMapInitialize = (props: MapConfiguration) => {
+  const {
+    center = DEFAULT_CENTER,
+    zoom = DEFAULT_ZOOM,
+    style = "mapbox://styles/mapbox/light-v11",
+    bearing = 0,
+    pitch = 0,
+  } = props;
 
-    const mapContainer = useRef<HTMLDivElement>(null);
-    const map = useRef<mapboxgl.Map | null>(null);
+  const mapContainer = useRef<HTMLDivElement>(null);
+  const map = useRef<mapboxgl.Map | null>(null);
 
-    useEffect(() => {
-        if (map.current) return;
-        if (!mapContainer.current) return;
+  useEffect(() => {
+    if (map.current) return;
+    if (!mapContainer.current) return;
 
-        mapboxgl.accessToken = config.mapbox.accessToken;
+    mapboxgl.accessToken = config.mapbox.accessToken;
 
-        try {
-            map.current = new mapboxgl.Map({
-                container: mapContainer.current,
-                style: "mapbox://styles/mapbox/streets-v12",
-                center: initialCenter,
-                zoom: initialZoom,
-            });
+    try {
+      map.current = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: style,
+        center: center,
+        zoom: zoom,
+        bearing: bearing,
+        pitch: pitch,
+      });
 
-            map.current.addControl(new mapboxgl.NavigationControl(), "top-right");
-        } catch (e) {
-            console.error("Error initializing map:", e);
+      map.current.addControl(new mapboxgl.NavigationControl(), "top-right");
+
+      const onStyleLoad = () => {
+        if (map.current) {
+          initializeMapLayers(map.current, storyLayers);
         }
+      };
 
-        return () => {
-            if (map.current) {
-                map.current.remove();
-                map.current = null;
-            }
-        };
-    }, [initialCenter, initialZoom]);
+      if (map.current.isStyleLoaded()) {
+        onStyleLoad();
+      } else {
+        map.current.on('style.load', onStyleLoad);
+      }
+    } catch (e) {
+      console.error("Error initializing map:", e);
+    }
 
-    return { mapContainer, map };
-}   
+    return () => {
+      if (map.current) {
+        map.current.remove();
+        map.current = null;
+      }
+    };
+  }, [center, zoom, style, bearing, pitch]);
+
+  return { mapContainer, map };
+};   
